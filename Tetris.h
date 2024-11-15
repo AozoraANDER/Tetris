@@ -15,12 +15,12 @@ class Tetris {
 
  private:
   void keyEvent();
-  //void inputEvent();
 
   void updateWindows();
   int getDelay();//return the delta time.
   void drop();
   void clearLine();
+  void moveLeftRight(int offset);
 
   private:
   int delay;
@@ -36,4 +36,5 @@ class Tetris {
 
   Block* curBlock;
   Block* nextBlock;
+  Block BackupBlock; //Backup current block to its last legal location 
 };

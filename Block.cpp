@@ -46,12 +46,19 @@ Block::Block()
 
 void Block::drop() {
 
-    for (auto &block: smallBlock) {
-    block.row++;
+    for (int i = 0; i < 4; i++) {
+    smallBlock[i].row++;
     }
+    /*for (auto &block: smallBlock) {
+    block.row++;
+    }*/
 }
 
-void Block::moveLeftRight(int offset) {}
+void Block::moveLeftRight(int offset) {
+  for (int i = 0; i < 4; i++) {
+    smallBlock[i].col += offset;
+  }
+}
 
 void Block::rotate() {
 
@@ -68,6 +75,40 @@ void Block::draw(int leftMargin, int topMargin) {
     }
 }
 
+
 IMAGE** Block::getImage() { 
     return imgs; 
+}
+
+Block& Block::operator=(const Block& other) {
+  if (this == &other) return *this;
+
+  this->blockType = other.blockType;
+
+  for (int i = 0; i < 4; i++) {
+    this->smallBlock[i] = other.smallBlock[i];
+  }
+  return *this;
+}
+
+bool Block::blockInMap(const vector<vector<int>>& map) {
+    int rows = map.size();
+    int cols = map[0].size();
+
+    for (int i = 0; i < 4; i++) {
+  
+      if (smallBlock[i].col < 0 || smallBlock[i].col >= cols ||
+          smallBlock[i].row < 0 || smallBlock[i].row >= rows ||
+          map[smallBlock[i].row][smallBlock[i].col]) {
+        return false;
+      }
+  }
+    return true;
+}
+
+void Block::solidify(vector<vector<int>>& map) {
+  for (int i = 0; i < 4; i++) {
+      //solidify the place here
+      map[smallBlock[i].row][smallBlock[i].col] = blockType;
+  }
 }

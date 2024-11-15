@@ -2,6 +2,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include "Block.h"
+#include <conio.h>
+#include <iostream>
 
 const int SPEED_NORMAL = 500;//0.5s
 const int SPEED_HARD = 50;//0.05s
@@ -52,7 +54,9 @@ void Tetris::init() {
 
 void Tetris::play() { 
 	init();
-
+  if (nextBlock != nullptr) {
+    delete nextBlock;
+  }
     nextBlock = new Block;
     curBlock = nextBlock;
     nextBlock = new Block;
@@ -77,10 +81,44 @@ void Tetris::play() {
           }
         }
 }
-//void Tetris::inputEvent() {}
+
 void Tetris::keyEvent() { 
     //update = true;
+    unsigned char ch;
+    bool is_rotate = false;
+    int dx = 0;
+  if (_kbhit()) {
+    ch = _getch();
 
+    if (ch == 224) {
+    
+        ch = _getch();
+        switch (ch) { 
+        case 72: //up
+          is_rotate = true;
+          break;
+        case 80: //down
+          delay = SPEED_HARD;
+          break;
+        case 75: //left
+          dx = -1;
+          break;
+        case 77: //right
+          dx = 1;
+          break;
+        default:
+          break;
+
+      }
+    }
+  }
+  if (is_rotate) {
+
+  }
+  if (dx != 0) {
+    moveLeftRight(dx);
+    update = true;
+  }
 }
 
 void Tetris::updateWindows() { 
@@ -93,11 +131,12 @@ void Tetris::updateWindows() {
 
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
+
       if (map[i][j] == 0) continue;
 
       int x = j * blockSize + leftMargin;
       int y = i * blockSize + topMargin;
-      putimage(x, y, imgs[map[i][j]]-1);
+      putimage(x, y, imgs[map[i][j]-1]);
     }
   }
 
@@ -130,7 +169,30 @@ int Tetris::getDelay() {
 }
 
 void Tetris::drop() { 
-    curBlock->drop(); 
+
+    BackupBlock = *curBlock;
+    curBlock->drop();
+
+    if (curBlock->blockInMap(map) == false) {
+    
+        //solidify the block here
+      BackupBlock.solidify(map);
+
+      delete curBlock;
+
+      curBlock = nextBlock;
+      nextBlock = new Block;
+    }
+    delay = SPEED_NORMAL;
 }
 
 void Tetris::clearLine() {}
+
+void Tetris::moveLeftRight(int offset) { 
+    BackupBlock = *curBlock;
+    curBlock->moveLeftRight(offset); 
+
+    if (!curBlock->blockInMap(map)) {
+      *curBlock = BackupBlock;
+    }
+}
