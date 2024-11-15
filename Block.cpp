@@ -44,7 +44,12 @@ Block::Block()
 
 }
 
-void Block::drop() {}
+void Block::drop() {
+
+    for (auto &block: smallBlock) {
+    block.row++;
+    }
+}
 
 void Block::moveLeftRight(int offset) {}
 

@@ -1,5 +1,4 @@
 ﻿  Block.cpp
-  Main.cpp
   Tetris.cpp
 C:\Users\LOU\source\repos\Tetris\Tetris.cpp(33,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
 C:\Users\LOU\source\repos\Tetris\Tetris.cpp(42,10): warning C4101: “data”: 未引用的局部变量

@@ -129,6 +129,8 @@ int Tetris::getDelay() {
     return 0; 
 }
 
-void Tetris::drop() {}
+void Tetris::drop() { 
+    curBlock->drop(); 
+}
 
 void Tetris::clearLine() {}
