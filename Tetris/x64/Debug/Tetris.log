@@ -1,6 +1,3 @@
-﻿  Block.cpp
-  Main.cpp
-  Tetris.cpp
-C:\Users\LOU\source\repos\Tetris\Tetris.cpp(10,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-  正在生成代码...
+﻿  Tetris.cpp
+C:\Users\LOU\source\repos\Tetris\Tetris.cpp(27,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
   Tetris.vcxproj -> C:\Users\LOU\source\repos\Tetris\x64\Debug\Tetris.exe

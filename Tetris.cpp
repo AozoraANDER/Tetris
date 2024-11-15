@@ -20,7 +20,6 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {
     */
     map = vector<vector<int>>(rows, vector<int>(cols, 0));
   }
-}
 
 void Tetris::init() { 
     delay = 30;
