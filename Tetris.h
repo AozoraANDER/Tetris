@@ -1,4 +1,10 @@
 #pragma once
+
+#include <vector>
+#include <graphics.h>
+
+using namespace std;
+
 class Tetris {
  public:
 
@@ -19,4 +25,11 @@ class Tetris {
   int delay;
   bool update;
 
+  vector<vector<int>> map;//map data
+  int cols;
+  int rows;
+  int leftMargin;
+  int topMargin;
+  int blockSize;
+  IMAGE imgBg;
 };

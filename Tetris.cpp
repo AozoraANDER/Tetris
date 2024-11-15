@@ -2,7 +2,25 @@
 #include <time.h>
 #include <stdlib.h>
 
-Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {}
+Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {
+  this->rows = rows;
+  this->cols = cols;
+  leftMargin = left;
+  topMargin = top;
+  this->blockSize = blockSize;
+
+  /* for (int i = 0; i < rows; i++) {
+  
+      vector<int> mapRow;
+    for (int j = 0; j < cols; j++) {
+    
+        mapRow.push_back(0);
+    }
+    map.push_back(mapRow);
+    */
+    map = vector<vector<int>>(rows, vector<int>(cols, 0));
+  }
+}
 
 void Tetris::init() { 
     delay = 30;
