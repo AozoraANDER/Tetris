@@ -5,8 +5,13 @@
 #include <conio.h>
 #include <iostream>
 
-const int SPEED_NORMAL = 500;//0.5s
-const int SPEED_HARD = 50;//0.05s
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
+
+#define MAX_LEVEL 5
+
+const int SPEED_NORMAL[MAX_LEVEL] = {500, 300, 150, 100, 80};
+const int SPEED_HARD = 30;
 
 Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {
   this->rows = rows;
@@ -29,7 +34,7 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {
 
 void Tetris::init() { 
 
-    delay = SPEED_NORMAL;
+    delay = SPEED_NORMAL[0];
 
     //random seed
     srand(time(NULL));
@@ -38,10 +43,12 @@ void Tetris::init() {
     initgraph(938,896);
 
     //load background image
-    loadimage(&imgBg, "res/bg2.png");
+    loadimage(&imgBg, "res/background.png");
 
     //initialize the data here
     char data[20][10];
+
+    int score = 0;
 
     for (int i = 0; i < rows; i++) {
 
@@ -50,6 +57,9 @@ void Tetris::init() {
             map[i][j] = 0;
         }
     }
+    score = 0;
+    lineCount = 0;
+    level = 1;
 }
 
 void Tetris::play() { 
@@ -144,8 +154,7 @@ void Tetris::updateWindows() {
   curBlock->draw(leftMargin, topMargin);
   nextBlock->draw(689, 150);
 
-  /*Block block;// test block
-  block.draw(263,133);*/
+  drawScore();
 
   EndBatchDraw();
 
@@ -184,10 +193,38 @@ void Tetris::drop() {
       curBlock = nextBlock;
       nextBlock = new Block;
     }
-    delay = SPEED_NORMAL;
+    delay = SPEED_NORMAL[level-1];
 }
 
-void Tetris::clearLine() {}
+void Tetris::clearLine() { 
+  int lines = 0;
+  int k = rows - 1;
+  for (int i = rows - 1; i >= 0; i--) {
+    int count = 0;
+    for (int j = 0; j < cols; j++) {
+      if (map[i][j]) {
+        count++;
+      }
+      map[k][j] = map[i][j];//scan while storage
+    }
+    if (count < cols) { // if not full then continue
+      k--;
+    } else {//in case of full
+      lines++;
+    }
+  }
+  if (lines > 0) {
+    int addScore[4] = {10, 30, 60, 80};
+    score += addScore[lines - 1];
+
+    mciSendString("play res/eliminate.mp3",0,0,0);
+    update = true;
+
+    //increase level for every 100 points of score
+    level = (score + 99)/ 100;
+    
+  }
+}
 
 void Tetris::moveLeftRight(int offset) { 
     BackupBlock = *curBlock;
@@ -206,4 +243,30 @@ void Tetris::rotate() {
     if (!curBlock->blockInMap(map)) {
       *curBlock = BackupBlock;
     }
+}
+
+void Tetris::drawScore() {
+  char scoreText[32];
+  sprintf_s(scoreText, sizeof(scoreText), "% d", score);
+
+  setcolor(RGB(180, 180, 180));
+
+  LOGFONT f;
+  gettextstyle(&f);
+  f.lfHeight = 60;
+  f.lfWeight = 30;
+  f.lfQuality = ANTIALIASED_QUALITY;//make the font antialias
+  strcpy_s(f.lfFaceName,sizeof(f.lfFaceName),_T("Segoe UI Black"));
+
+  settextstyle(&f);
+
+  outtextxy(670, 727, scoreText);
+
+  sprintf_s(scoreText, sizeof(scoreText), "%d", lineCount);
+  gettextstyle(&f);
+  int xPos = 224 - f.lfWidth * strlen(scoreText);
+  outtextxy(xPos, 817, scoreText);
+
+  sprintf_s(scoreText, sizeof(scoreText), "%d", level);
+  outtextxy(224 - 30, 727, scoreText);
 }

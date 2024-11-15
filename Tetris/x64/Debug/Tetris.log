@@ -1,9 +1,6 @@
-﻿  Block.cpp
-C:\Users\LOU\source\repos\Tetris\Block.cpp(100,14): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-C:\Users\LOU\source\repos\Tetris\Block.cpp(101,14): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-  Tetris.cpp
-C:\Users\LOU\source\repos\Tetris\Tetris.cpp(35,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\LOU\source\repos\Tetris\Tetris.cpp(44,10): warning C4101: “data”: 未引用的局部变量
-C:\Users\LOU\source\repos\Tetris\Tetris.cpp(164,15): warning C4244: “初始化”: 从“unsigned __int64”转换到“int”，可能丢失数据
-  正在生成代码...
+﻿  Tetris.cpp
+C:\Users\LOU\source\repos\Tetris\Tetris.cpp(40,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\LOU\source\repos\Tetris\Tetris.cpp(49,10): warning C4101: “data”: 未引用的局部变量
+C:\Users\LOU\source\repos\Tetris\Tetris.cpp(173,15): warning C4244: “初始化”: 从“unsigned __int64”转换到“int”，可能丢失数据
+C:\Users\LOU\source\repos\Tetris\Tetris.cpp(267,12): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
   Tetris.vcxproj -> C:\Users\LOU\source\repos\Tetris\x64\Debug\Tetris.exe

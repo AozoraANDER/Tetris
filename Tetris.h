@@ -22,6 +22,7 @@ class Tetris {
   void clearLine();
   void moveLeftRight(int offset);
   void rotate();
+  void drawScore();
 
   private:
   int delay;
@@ -33,6 +34,9 @@ class Tetris {
   int leftMargin;
   int topMargin;
   int blockSize;
+  int score;
+  int level; //Current level
+  int lineCount; //The line that has been eliminated
   IMAGE imgBg;
 
   Block* curBlock;
