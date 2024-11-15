@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <graphics.h>
+#include "Block.h"
 
 using namespace std;
 
@@ -32,4 +33,7 @@ class Tetris {
   int topMargin;
   int blockSize;
   IMAGE imgBg;
+
+  Block* curBlock;
+  Block* nextBlock;
 };

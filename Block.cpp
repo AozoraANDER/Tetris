@@ -62,3 +62,7 @@ void Block::draw(int leftMargin, int topMargin) {
 
     }
 }
+
+IMAGE** Block::getImage() { 
+    return imgs; 
+}
