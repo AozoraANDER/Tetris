@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include "Block.h"
 #include <conio.h>
+#include <fstream>
 #include <iostream>
 
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
 #define MAX_LEVEL 5
+#define RECORDS "recorder.txt"
 
 const int SPEED_NORMAL[MAX_LEVEL] = {500, 300, 150, 100, 80};
 const int SPEED_HARD = 30;
@@ -34,6 +36,7 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize) {
 
 void Tetris::init() { 
 
+    mciSendString("play res/bg.mp3 repeat", 0, 0, 0);
     delay = SPEED_NORMAL[0];
 
     //random seed
@@ -44,6 +47,9 @@ void Tetris::init() {
 
     //load background image
     loadimage(&imgBg, "res/background.png");
+
+    loadimage(&imgWin, "res/win.png");
+    loadimage(&imgOver, "res/over.png");
 
     //initialize the data here
     char data[20][10];
@@ -60,6 +66,18 @@ void Tetris::init() {
     score = 0;
     lineCount = 0;
     level = 1;
+
+    //initialize highest score
+    ifstream file(RECORDS);
+    if (!file.is_open()) {
+      std::cout << RECORDS << "fail to open" << endl;
+      highestScore = 0;
+    } else {
+      file >> highestScore;
+    }
+    file.close();
+
+    gameOver = false;
 }
 
 void Tetris::play() { 
@@ -88,6 +106,19 @@ void Tetris::play() {
             updateWindows();//update screen
             //update game data
             clearLine(); 
+
+
+          }
+          if (gameOver) {//save the score
+            saveScore();
+
+            // update game over
+
+            displayOver();
+
+            system("pause");
+
+            init();
           }
         }
 }
@@ -192,6 +223,8 @@ void Tetris::drop() {
 
       curBlock = nextBlock;
       nextBlock = new Block;
+
+      checkOver();
     }
     delay = SPEED_NORMAL[level-1];
 }
@@ -212,6 +245,7 @@ void Tetris::clearLine() {
     } else {//in case of full
       lines++;
     }
+    
   }
   if (lines > 0) {
     int addScore[4] = {10, 30, 60, 80};
@@ -222,7 +256,12 @@ void Tetris::clearLine() {
 
     //increase level for every 100 points of score
     level = (score + 99)/ 100;
-    
+
+    if (level > MAX_LEVEL) {
+      gameOver = true;
+    }
+
+    lineCount += lines;
   }
 }
 
@@ -265,8 +304,39 @@ void Tetris::drawScore() {
   sprintf_s(scoreText, sizeof(scoreText), "%d", lineCount);
   gettextstyle(&f);
   int xPos = 224 - f.lfWidth * strlen(scoreText);
-  outtextxy(xPos, 817, scoreText);
+  outtextxy(224 - 90, 817, scoreText);
 
   sprintf_s(scoreText, sizeof(scoreText), "%d", level);
-  outtextxy(224 - 30, 727, scoreText);
+  outtextxy(224 - 90, 727, scoreText);
+
+  sprintf_s(scoreText, sizeof(scoreText), "%d", highestScore);
+  outtextxy(670, 817, scoreText);
+}
+
+void Tetris::checkOver() { 
+    gameOver = (curBlock->blockInMap(map) == false);
+
+}
+
+void Tetris::saveScore() {
+
+    if (score > highestScore) {
+    highestScore = score;
+
+    ofstream file(RECORDS);
+    file << highestScore;
+    file.close();
+    }
+}
+
+void Tetris::displayOver() { 
+    mciSendString("play res/bg.mp3 repeat", 0, 0, 0);
+
+    if (level <= MAX_LEVEL) {
+      putimage(262, 361, &imgOver);
+      mciSendString("play res/over.mp3", 0, 0, 0);
+    } else {
+      putimage(262, 361, &imgWin);
+      mciSendString("play res/win.mp3", 0, 0, 0);
+    }
 }

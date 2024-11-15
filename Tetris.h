@@ -23,6 +23,9 @@ class Tetris {
   void moveLeftRight(int offset);
   void rotate();
   void drawScore();
+  void checkOver();//Check the game status
+  void saveScore();
+  void displayOver();
 
   private:
   int delay;
@@ -35,9 +38,14 @@ class Tetris {
   int topMargin;
   int blockSize;
   int score;
+  int highestScore;
   int level; //Current level
   int lineCount; //The line that has been eliminated
+  bool gameOver; // if game is over
+
   IMAGE imgBg;
+  IMAGE imgOver;
+  IMAGE imgWin;
 
   Block* curBlock;
   Block* nextBlock;
