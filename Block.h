@@ -23,6 +23,7 @@ class Block {
 
   bool blockInMap(const vector<vector<int>>& map);
   void solidify(vector<vector<int>>& map);
+  int getBlockType();
   //Point* getSmallBlock();
 
   private:

@@ -113,7 +113,8 @@ void Tetris::keyEvent() {
     }
   }
   if (is_rotate) {
-
+    rotate();
+    update = true;
   }
   if (dx != 0) {
     moveLeftRight(dx);
@@ -191,6 +192,16 @@ void Tetris::clearLine() {}
 void Tetris::moveLeftRight(int offset) { 
     BackupBlock = *curBlock;
     curBlock->moveLeftRight(offset); 
+
+    if (!curBlock->blockInMap(map)) {
+      *curBlock = BackupBlock;
+    }
+}
+
+void Tetris::rotate() { 
+    if (curBlock->getBlockType() == 7) return;
+    BackupBlock = *curBlock;
+    curBlock->rotate();
 
     if (!curBlock->blockInMap(map)) {
       *curBlock = BackupBlock;

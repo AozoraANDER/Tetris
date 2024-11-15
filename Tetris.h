@@ -21,6 +21,7 @@ class Tetris {
   void drop();
   void clearLine();
   void moveLeftRight(int offset);
+  void rotate();
 
   private:
   int delay;
