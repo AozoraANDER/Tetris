@@ -48,6 +48,17 @@ void Block::drop() {}
 
 void Block::moveLeftRight(int offset) {}
 
-void Block::rotate() {}
+void Block::rotate() {
 
-void Block::draw(int leftMargin, int topMargin) {}
+
+}
+
+void Block::draw(int leftMargin, int topMargin) {
+
+    for (int i = 0; i < 4; i++) {
+      int x = leftMargin + smallBlock[i].col * size;
+      int y = topMargin + smallBlock[i].row * size;
+      putimage(x, y, img);
+
+    }
+}
